@@ -5,7 +5,7 @@ import {
   Module
 } from "vuex-class-component";
 
-export interface Menu {
+interface Menu {
   title: string;
   route: string;
   isActive: boolean;
