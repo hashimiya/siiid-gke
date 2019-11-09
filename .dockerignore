@@ -1,0 +1,6 @@
+*.yaml
+Makefile
+*.md
+.gitignore
+.dockerignore
+data/

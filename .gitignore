@@ -1,0 +1,4 @@
+data/
+.env
+siiid-developer.json
+proto/*.go

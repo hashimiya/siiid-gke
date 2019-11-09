@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: siiid-api
+spec:
+  selector:
+    matchLabels:
+      app: siiid
+      tier: api-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: siiid
+        tier: api-server
+    spec:
+      containers:
+      - name: siiid
+        image: gcr.io/siiid-prd/siiid-backend-sv:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: OWM_API_KEY
+          value: CiQAu/EDeTIx+WRDX5gdvJSbZYQ1nlIob/UCl5J1p5CAmR90RJYSSgBldElcTDnBeR564YayzZeGqVSdi/n4sQeu7vv9WFCUZi6HcV0726S9prnA9zCtdQfALyREiITYuj7P9HjV97NWCz+vq9KvoZJi
+        - name: PLACE_API_KEY
+          value: CiQAu/EDeU4v9M80Af2Q9EaeZOgD5qDG4m1oDUHMrG/Sx7cNvroSUABldElcfgjmBvEqHnlqynqwtI3CPkg/L4Z3R60Sl0jA37H+jTyr9YIMaoPmuZxSL+sP1jdOIVlBptRJmBQH9Npry6wP7yLWGTkoljcnMW2N
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/credentials.json
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+        ports:
+        - containerPort: 5001
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: app-key

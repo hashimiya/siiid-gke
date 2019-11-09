@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: siiidweb
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: siiid-ip
+    networking.gke.io/managed-certificates: siiid-certificate,siiid-api-certificate
+    kubernetes.io/ingress.allow-http: "false"
+  labels:
+    app: siiid
+spec:
+  rules:
+  - host: siiid.satokura.com
+    http:
+      paths:
+      - backend:
+          serviceName: siiid-frontend
+          servicePort: siiid-f-port
+  - host: siiid-api.satokura.com
+    http:
+      paths:
+      - backend:
+          serviceName: siiid-api-gateway
+          servicePort: ags-port

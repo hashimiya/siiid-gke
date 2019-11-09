@@ -1,0 +1,108 @@
+syntax = "proto3";
+package siiid;
+
+import "google/api/annotations.proto";
+
+service SiiidService {
+  rpc Hello (HelloRequest) returns (HelloResponse) {
+    option (google.api.http) = {
+      get: "/{name}"
+    };
+  }
+  rpc ListPoints(ListPointsRequest) returns (ListPointsResponse) {
+    option (google.api.http) = {
+      get: "/v1/points"
+    };
+  }
+  rpc GetPoint(GetPointsRequest) returns (PointSummary) {
+    option (google.api.http) = {
+      get: "/v1/points/{id}"
+    };
+  }
+  rpc RecordPoint(RecordPointRequest) returns (PointSummary) {
+    option (google.api.http) = {
+      post: "/v1/points"
+      body: "*"
+    };
+  }
+  rpc UpdatePoint(UpdatePointRequest) returns (UpdatePointResponse) {
+    option (google.api.http) = {
+      put: "/v1/points/{id}"
+      body: "*"
+    };
+  }
+  rpc DeletePoint(DeletePointRequest) returns (DeletePointResponse) {
+    option (google.api.http) = {
+      delete: "/v1/points/{id}"
+    };
+  }
+}
+
+// @see https://openweathermap.org/weather-conditions
+enum Weather {
+  Thunderstorm = 0;
+  Drizzle = 1;
+  Rain = 2;
+  Snow = 3;
+  Mist = 4;
+  Smoke = 5;
+  Haze = 6;
+  Dust = 7;
+  Fog = 8;
+  Sand = 9;
+  Ash = 10;
+  Squall = 11;
+  Tornado = 12;
+  Clear = 13;
+  Clouds = 14;
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  string message = 1;
+}
+
+message ListPointsRequest {
+  // todo: startAt, endAt, limit ... etc
+}
+
+message ListPointsResponse {
+  repeated PointSummary points = 1;
+}
+
+message GetPointsRequest {
+  int32 id = 1;
+}
+
+message RecordPointRequest {
+  float latitude = 1;
+  float longitude = 2;
+  string place = 3;
+}
+
+message UpdatePointRequest {
+  int32 id = 1;
+  string place = 2;
+}
+
+message UpdatePointResponse {}
+
+message DeletePointRequest {
+  int32 id = 1;
+}
+
+message DeletePointResponse {}
+
+message PointSummary {
+  int32 id = 1;
+  string place = 2;
+  Weather weather = 3;
+  float temperature = 4;
+  int32 humidity = 5;
+  float latitude = 6;
+  float longitude = 7;
+  string actionedAt = 8;
+}

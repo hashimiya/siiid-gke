@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: siiid-api-gateway
+  labels:
+    app: siiid
+spec:
+  type: NodePort
+  ports:
+  - name: ags-port
+    port: 80
+    targetPort: agd-port
+  selector:
+    app: siiid

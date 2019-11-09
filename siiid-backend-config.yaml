@@ -1,0 +1,7 @@
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: siiid-backend-config
+spec:
+  securityPolicy:
+    name: "siiid-security-policies"

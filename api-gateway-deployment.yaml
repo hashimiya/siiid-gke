@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: siiid
+      tier: api-gateway
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: siiid
+        tier: api-gateway
+    spec:
+      containers:
+      - name: siiid
+        image: gcr.io/siiid-prd/siiid-backend-gk:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: SERVER_NAME
+          value: siiid-api
+        - name: SERVER_PORT
+          value: "5001"
+        ports:
+        - name: agd-port
+          containerPort: 8080
