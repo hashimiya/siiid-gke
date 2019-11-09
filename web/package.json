@@ -1,0 +1,23 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "siiid web",
+  "author": "hashimiya",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate"
+  },
+  "dependencies": {
+    "@nuxt/types": "^0.3.4",
+    "@nuxt/typescript-build": "^0.3.4",
+    "@nuxt/typescript-runtime": "^0.2.4",
+    "bootstrap-vue": "^2.0.4",
+    "nuxt": "^2.0.0",
+    "vue-property-decorator": "^8.3.0",
+    "vuex-class-component": "^2.0.4"
+  },
+  "devDependencies": {}
+}

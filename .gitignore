@@ -2,3 +2,4 @@ data/
 .env
 siiid-developer.json
 proto/*.go
+.DS_Store
