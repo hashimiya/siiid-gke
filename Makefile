@@ -1,32 +1,6 @@
 CLUSTER=${siiid}
-
-cluster_list:
-	gcloud container clusters list
-.PHONY: cluster_list
-
-cluster_describe:
-	gcloud container clusters describe ${CLUSTER}
-.PHONY: cluster_describe
-
-get_pods:
-	kubectl get pods
-.PHONY: get_pods
-
-get_service:
-	kubectl get service
-.PHONY: get_service
-
-get_ingress:
-	kubectl get ingress
-.PHONY: get_ingress
-
-get_pod_log:
-	kubectl logs -f ${POD}
-.PHONY: get_pod_log
-
-get_address:
-	gcloud compute addresses describe ${IP} --global
-.PHONY: get_address
+PROTOC_GEN_TS_PATH=./node_modules/.bin/protoc-gen-ts
+OUT_DIR=./generated
 
 create:
 	kubectl create -f ${FILE}
@@ -51,14 +25,6 @@ deploy:
 	gcloud docker -- push gcr.io/siiid-prd/siiid-backend-gk
 	gcloud docker -- push gcr.io/siiid-prd/siiid-backend-sv
 .PHONY: deploy
-
-dev:
-	docker-compose up -d
-.PHONY: dev
-
-check_hello:
-	curl -vvv -X GET http://0.0.0.0:8765
-.PHOYNY: check_hello
 
 protoc:
 	protoc -I/usr/local/include -I. \
