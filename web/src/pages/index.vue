@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <p>{{ hello }}</p>
+    <button @click="send">
+      send
+    </button>
   </div>
 </template>
 
@@ -15,7 +18,11 @@ export default class Index extends Vue {
   }
 
   get hello(): string {
-    return "index"
+    return vxm.hello.message
+  }
+
+  send() {
+    vxm.hello.helloAsync()
   }
 }
 </script>

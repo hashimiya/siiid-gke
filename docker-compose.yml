@@ -2,9 +2,9 @@ version: '3'
 
 services:
   web:
-    image: gcr.io/siiid-prd/siiid-frontend:latest
+    image: gcr.io/siiid-prd/web:latest
     ports:
-      - "3341:3000"
+      - "1111:65432"
   api:
     image: gcr.io/siiid-prd/siiid-backend-sv:latest
     environment:

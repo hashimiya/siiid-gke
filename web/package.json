@@ -7,15 +7,19 @@
   "scripts": {
     "dev": "nuxt-ts",
     "build": "nuxt-ts build",
-    "start": "nuxt-ts start",
+    "start": "nuxt-ts start --hostname 0.0.0.0",
     "generate": "nuxt-ts generate"
   },
   "dependencies": {
+    "@improbable-eng/grpc-web": "^0.11.0",
     "@nuxt/types": "^0.3.4",
     "@nuxt/typescript-build": "^0.3.4",
     "@nuxt/typescript-runtime": "^0.2.4",
+    "@types/google-protobuf": "^3.7.2",
     "bootstrap-vue": "^2.0.4",
+    "google-protobuf": "^3.10.0",
     "nuxt": "^2.0.0",
+    "ts-protoc-gen": "^0.12.0",
     "vue-property-decorator": "^8.3.0",
     "vuex-class-component": "^2.0.4"
   },
