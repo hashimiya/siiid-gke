@@ -22,8 +22,16 @@ export class PointStore extends VuexModule {
           summary.setPlace(v.place);
           summary.setTemperature(v.temperature);
           summary.setWeather(v.weather);
-          summary.setActionedat(v.actionedat);
+          summary.setActionedat(v.actionedAt);
           return summary;
+        }).sort(function (a: PointSummary, b: PointSummary): number {
+          if (a.getActionedat() < b.getActionedat()) {
+            return -1
+          }
+          if (a.getActionedat() > b.getActionedat()) {
+            return 1
+          }
+          return 0;
         });
       });
     });
