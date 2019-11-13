@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <p>{{ hello }}</p>
-    <button @click="send">
+    <p>{{ message }}</p>
+    <button @click="sendAsync">
       send
     </button>
   </div>
@@ -17,12 +17,12 @@ export default class Index extends Vue {
     vxm.menu.topActive()
   }
 
-  get hello(): string {
+  get message(): string {
     return vxm.hello.message
   }
 
-  send() {
-    vxm.hello.helloAsync()
+  async sendAsync() {
+    await vxm.hello.helloAsync(this.$http)
   }
 }
 </script>

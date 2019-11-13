@@ -43,11 +43,23 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    "bootstrap-vue/nuxt"
+    "bootstrap-vue/nuxt",
+    "@nuxt/http",
   ],
   /*
   ** Build configuration
   */
   build: {
+  },
+  http: {
+    // host: 'siiid-api.satokuau.com',
+    proxy: true,
+    // https: true,
+  },
+  proxy: {
+    '/api/': {
+      target: 'https://siiid-api.satokura.com',
+      pathRewrite: { '^/api/': '' }
+    }
   }
 }

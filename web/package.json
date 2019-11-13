@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.11.0",
+    "@nuxt/http": "^0.3.8",
     "@nuxt/types": "^0.3.4",
     "@nuxt/typescript-build": "^0.3.4",
     "@nuxt/typescript-runtime": "^0.2.4",
