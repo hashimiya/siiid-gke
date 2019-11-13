@@ -16,8 +16,8 @@ export class MenuStore extends VuexModule {
   @getter
   public list: Menu[] = [
     {
-      title: "トップ",
-      route: "/",
+      title: "ヒートマップ",
+      route: "/heatmap",
       isActive: true,
     },
     {

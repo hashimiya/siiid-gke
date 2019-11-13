@@ -33,7 +33,9 @@ import { vxm } from "@/store/store";
 import { PointSummary } from "~/proto/siiid_service_pb";
 import moment from "moment-timezone";
 
-@Component
+@Component({
+  layout: "app",
+})
 export default class Index extends Vue {
   mounted() {
     vxm.menu.timelineActive();

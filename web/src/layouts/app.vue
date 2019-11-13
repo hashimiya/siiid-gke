@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Sidebar />
     <nuxt />
     <Footer />
   </div>
@@ -8,13 +9,15 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import Footer from "@/components/Footer.vue";
+import Sidebar from "@/components/Sidebar.vue";
 
 @Component({
   components: {
     Footer,
+    Sidebar,
   },
 })
-export default class Default extends Vue {}
+export default class App extends Vue {}
 </script>
 
 <style scoped>

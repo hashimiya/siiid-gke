@@ -1,9 +1,10 @@
+const API_KEY = process.env.API_KEY;
 
 export default {
   mode: 'universal',
   srcDir: "src/",
   server: {
-    port: 65432
+    port: 65431
   },
   /*
   ** Headers of the page
@@ -17,6 +18,11 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      {
+        src: `https://maps.google.com/maps/api/js?key=${API_KEY}&libraries=visualization`,
+      }
     ]
   },
   /*
