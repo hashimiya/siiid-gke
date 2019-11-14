@@ -1,6 +1,24 @@
-import {action, Module, VuexModule,} from "vuex-class-component";
-import {NuxtHTTPInstance} from "@nuxt/http";
-import {PointSummary} from "~/proto/siiid_service_pb";
+import {
+  action,
+  Module,
+  mutation,
+  VuexModule,
+} from "vuex-class-component";
+import {
+  NuxtHTTPInstance,
+} from "@nuxt/http";
+import {
+  PointSummary,
+  RecordPointRequest,
+} from "~/proto/siiid_service_pb";
+import {
+  convertSummaryFromObj,
+} from "~/utils/grpc_message_util";
+
+export interface AddPointPayload {
+  http: NuxtHTTPInstance
+  latLng: google.maps.LatLng
+}
 
 @Module({ namespacedPath: "point/", target: "nuxt" })
 export class PointStore extends VuexModule {
@@ -17,30 +35,42 @@ export class PointStore extends VuexModule {
     return this._pointSummaryList[0];
   }
 
+  @mutation
+  pushPointSummary(point: PointSummary): void {
+    this._pointSummaryList.push(point);
+    this._pointSummaryList.sort(function (a: PointSummary, b: PointSummary): number {
+      return a.getActionedat() > b.getActionedat() ? 1 : -1;
+    })
+  }
+
   @action
   async fetchListAsync(http: NuxtHTTPInstance) {
-    await http.get("points", { prefixUrl: "/api/v1/" }).then((res) => {
-      res.json().then(({ points }) => {
-        this._pointSummaryList = Array.from(points).map((v: any) => {
-          const summary = new PointSummary();
-          summary.setId(v.id);
-          summary.setHumidity(v.humidity);
-          summary.setLatitude(v.latitude);
-          summary.setLongitude(v.longitude);
-          summary.setPlace(v.place);
-          summary.setTemperature(v.temperature);
-          summary.setWeather(v.weather);
-          summary.setActionedat(v.actionedAt);
-          return summary;
+    await http.get("points", { prefixUrl: "/api/v1/" }).then(async (res) => {
+      await res.json().then(({ points }) => {
+        this._pointSummaryList = Array.from(points).map((point: any) => {
+          return convertSummaryFromObj(point);
         }).sort(function (a: PointSummary, b: PointSummary): number {
-          if (a.getActionedat() > b.getActionedat()) {
-            return -1;
-          }
-          if (a.getActionedat() < b.getActionedat()) {
-            return 1;
-          }
-          return 0;
+          return a.getActionedat() > b.getActionedat() ? 1 : -1;
         });
+      });
+    });
+  }
+
+  @action
+  async addPointAsync(addPointPayload: AddPointPayload): Promise<PointSummary> {
+    const { http, latLng } = addPointPayload;
+
+    const req = new RecordPointRequest();
+    req.setLatitude(latLng.lat());
+    req.setLongitude(latLng.lng());
+
+    return http.post(
+      "points",
+      req.toObject(),
+      { prefixUrl: "/api/v1/" },
+    ).then(res => {
+      return res.json().then(point => {
+        return convertSummaryFromObj(point);
       });
     });
   }

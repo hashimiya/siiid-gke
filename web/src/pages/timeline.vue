@@ -38,8 +38,11 @@ import moment from "moment-timezone";
 })
 export default class Index extends Vue {
   mounted() {
+    if (!vxm.heatmap.isEnabledMap) {
+      this.$nuxt.$router.push("heatmap");
+      return;
+    }
     vxm.menu.timelineActive();
-
     this.$nextTick(function () {
       const firstPoint = vxm.point.firstPoint;
       if (firstPoint !== null) {

@@ -7,11 +7,33 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
 import { vxm } from "@/store/store";
 
 @Component
-export default class Default extends Vue {}
+export default class Default extends Vue {
+  get targetLatLng() {
+    return vxm.heatmap.targetLatLng;
+  }
+
+  @Watch("targetLatLng")
+  onTargetLatLngChanged(latLng: google.maps.LatLng | null, _: any) {
+    if (latLng === null) {
+      return;
+    }
+    vxm.point.addPointAsync({
+      http: this.$http,
+      latLng,
+    }).then(point => {
+      vxm.point.pushPointSummary(point);
+
+      const latLngList = vxm.point.pointSummaryList.map(summary => {
+        return new google.maps.LatLng(summary.getLatitude(), summary.getLongitude());
+      });
+      vxm.heatmap.updateHeatmap(latLngList);
+    });
+  }
+}
 </script>
 
 <style scoped>

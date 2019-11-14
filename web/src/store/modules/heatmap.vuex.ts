@@ -1,4 +1,9 @@
-import { VuexModule, Module, mutation, action } from "vuex-class-component";
+import {
+  VuexModule,
+  Module,
+  mutation,
+  action,
+} from "vuex-class-component";
 import {} from "googlemaps";
 
 declare let google: any;
@@ -14,6 +19,15 @@ export class HeatmapStore extends VuexModule {
   private map: google.maps.Map | null = null;
   private heatmapData: google.maps.visualization.WeightedLocation[] = [];
   private heatmap: google.maps.visualization.HeatmapLayer | null = null;
+  private _targetLatLng: google.maps.LatLng | null = null;
+
+  get isEnabledMap(): boolean {
+    return this.map !== null;
+  }
+
+  get targetLatLng(): google.maps.LatLng | null {
+    return this._targetLatLng;
+  }
 
   @mutation
   createMap(mapElementId: string): void {
@@ -38,10 +52,13 @@ export class HeatmapStore extends VuexModule {
       document.getElementById(mapElementId),
       this.options
     );
+    google.maps.event.addDomListener(this.map, "click", (event: any) => {
+      this._targetLatLng = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+    });
   }
 
   @mutation
-  pushWeightedLocationList(latLngList: google.maps.LatLng[]): void {
+  updateHeatmap(latLngList: google.maps.LatLng[]): void {
     latLngList.forEach(latLng => {
       const weightedLocation: google.maps.visualization.WeightedLocation = {
         location: latLng,
@@ -91,9 +108,5 @@ export class HeatmapStore extends VuexModule {
   @action
   initialize(mapElementId: string): any {
     this.createMap(mapElementId);
-  }
-
-  get isEnabled(): boolean {
-    return this.map !== null && this.heatmap !== null;
   }
 }

@@ -23,13 +23,14 @@ import { vxm } from "@/store/store";
 })
 export default class App extends Vue {
   mounted() {
-    vxm.point.fetchListAsync(this.$http);
-    vxm.heatmap.initialize("map");
+    vxm.point.fetchListAsync(this.$http).then(() => {
+      vxm.heatmap.initialize("map");
 
-    const latLngList = vxm.point.pointSummaryList.map(summary => {
-      return new google.maps.LatLng(summary.getLatitude(), summary.getLongitude());
+      const latLngList = vxm.point.pointSummaryList.map(summary => {
+        return new google.maps.LatLng(summary.getLatitude(), summary.getLongitude());
+      });
+      vxm.heatmap.updateHeatmap(latLngList);
     });
-    vxm.heatmap.pushWeightedLocationList(latLngList);
   }
 }
 </script>
