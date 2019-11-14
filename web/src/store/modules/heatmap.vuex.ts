@@ -5,8 +5,10 @@ declare let google: any;
 
 @Module({ namespacedPath: "heatmap/", target: "nuxt" })
 export class HeatmapStore extends VuexModule {
-  private CENTER_LAT: number = 40;
-  private CENTER_LNG: number = 140;
+  private CENTER_LAT: number = 43.06417;
+  private CENTER_LNG: number = 141.34694;
+  private ZOOM_OUT: number = 7;
+  private ZOOM_IN: number = 18;
 
   private options: google.maps.MapOptions = {};
   private map: google.maps.Map | null = null;
@@ -19,7 +21,7 @@ export class HeatmapStore extends VuexModule {
       return;
     }
     this.options = {
-      zoom: 7,
+      zoom: this.ZOOM_OUT,
       center: new google.maps.LatLng(this.CENTER_LAT, this.CENTER_LNG),
       mapTypeId: google.maps.MapTypeId.TERRAIN,
       zoomControl: false,
@@ -39,17 +41,14 @@ export class HeatmapStore extends VuexModule {
   }
 
   @mutation
-  createWeightedLocationMock(): void {
-    const location = new google.maps.LatLng(35, 135);
-    const weihtedLocation: google.maps.visualization.WeightedLocation = {
-      location,
-      weight: 0.5
-    };
-    this.heatmapData.push(weihtedLocation);
-  }
-
-  @mutation
-  updateHeatmap(): void {
+  pushWeightedLocationList(latLngList: google.maps.LatLng[]): void {
+    latLngList.forEach(latLng => {
+      const weightedLocation: google.maps.visualization.WeightedLocation = {
+        location: latLng,
+        weight: 0.5,
+      };
+      this.heatmapData.push(weightedLocation);
+    });
     const heatmap = new google.maps.visualization.HeatmapLayer({
       data: this.heatmapData
     });
@@ -57,14 +56,41 @@ export class HeatmapStore extends VuexModule {
     this.heatmap = heatmap;
   }
 
+  @mutation
+  initializeCenter() {
+    if (this.map === null) {
+      return;
+    }
+    this.map.setCenter(new google.maps.LatLng(this.CENTER_LAT, this.CENTER_LNG));
+  }
+
+  @mutation
+  updateCenter(center: google.maps.LatLng) {
+    if (this.map === null) {
+      return;
+    }
+    this.map.setCenter(center);
+  }
+
+  @mutation
+  zoomIn() {
+    if (this.map === null) {
+      return;
+    }
+    this.map.setZoom(this.ZOOM_IN);
+  }
+
+  @mutation
+  zoomOut() {
+    if (this.map === null) {
+      return;
+    }
+    this.map.setZoom(this.ZOOM_OUT);
+  }
+
   @action
   initialize(mapElementId: string): any {
     this.createMap(mapElementId);
-
-    // todo: APIからの取得に置き換える
-    this.createWeightedLocationMock();
-
-    this.updateHeatmap();
   }
 
   get isEnabled(): boolean {

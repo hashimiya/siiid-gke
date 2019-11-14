@@ -10,7 +10,15 @@ export class PointStore extends VuexModule {
     return this._pointSummaryList;
   }
 
-  @action async fetchListAsync(http: NuxtHTTPInstance) {
+  get firstPoint(): PointSummary|null {
+    if (this._pointSummaryList.length === 0) {
+      return null;
+    }
+    return this._pointSummaryList[0];
+  }
+
+  @action
+  async fetchListAsync(http: NuxtHTTPInstance) {
     await http.get("points", { prefixUrl: "/api/v1/" }).then((res) => {
       res.json().then(({ points }) => {
         this._pointSummaryList = Array.from(points).map((v: any) => {
@@ -25,11 +33,11 @@ export class PointStore extends VuexModule {
           summary.setActionedat(v.actionedAt);
           return summary;
         }).sort(function (a: PointSummary, b: PointSummary): number {
-          if (a.getActionedat() < b.getActionedat()) {
-            return -1
-          }
           if (a.getActionedat() > b.getActionedat()) {
-            return 1
+            return -1;
+          }
+          if (a.getActionedat() < b.getActionedat()) {
+            return 1;
           }
           return 0;
         });

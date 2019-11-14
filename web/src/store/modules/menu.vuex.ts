@@ -28,12 +28,12 @@ export class MenuStore extends VuexModule {
   ];
 
   @mutation
-  public topActive() {
+  public heatmapActive() {
     this.list = this.list.map(v => {
       return {
         title: v.title,
         route: v.route,
-        isActive: v.title === "トップ",
+        isActive: v.title === "ヒートマップ",
       }
     })
   }

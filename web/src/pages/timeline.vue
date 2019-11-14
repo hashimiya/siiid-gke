@@ -39,7 +39,16 @@ import moment from "moment-timezone";
 export default class Index extends Vue {
   mounted() {
     vxm.menu.timelineActive();
-    vxm.point.fetchListAsync(this.$http);
+
+    const latLngList = vxm.point.pointSummaryList.map(summary => {
+      return new google.maps.LatLng(summary.getLatitude(), summary.getLongitude());
+    });
+    vxm.heatmap.pushWeightedLocationList(latLngList);
+    const firstPoint = vxm.point.firstPoint;
+    if (firstPoint !== null) {
+      vxm.heatmap.updateCenter(new google.maps.LatLng(firstPoint.getLatitude(), firstPoint.getLongitude()))
+      vxm.heatmap.zoomIn();
+    }
   }
 
   get summaryList(): PointSummary[] {

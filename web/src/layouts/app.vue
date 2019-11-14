@@ -2,6 +2,7 @@
   <div>
     <Sidebar />
     <nuxt />
+    <GMap />
     <Footer />
   </div>
 </template>
@@ -10,14 +11,22 @@
 import { Vue, Component } from "vue-property-decorator";
 import Footer from "@/components/Footer.vue";
 import Sidebar from "@/components/Sidebar.vue";
+import GMap from "~/components/GMap.vue";
+import { vxm } from "@/store/store";
 
 @Component({
   components: {
+    GMap,
     Footer,
     Sidebar,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  mounted() {
+    vxm.point.fetchListAsync(this.$http);
+    vxm.heatmap.initialize("map");
+  }
+}
 </script>
 
 <style scoped>

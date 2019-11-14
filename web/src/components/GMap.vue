@@ -11,13 +11,7 @@ import { Vue, Component } from "vue-property-decorator";
 import { vxm } from "@/store/store";
 
 @Component
-export default class Default extends Vue {
-  mounted() {
-    if (vxm.heatmap.isEnabled === false) {
-      vxm.heatmap.initialize("map");
-    }
-  }
-}
+export default class Default extends Vue {}
 </script>
 
 <style scoped>
