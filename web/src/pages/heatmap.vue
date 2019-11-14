@@ -13,12 +13,10 @@ import { vxm } from "@/store/store";
 export default class Heatmap extends Vue {
   mounted() {
     vxm.menu.heatmapActive();
-    const latLngList = vxm.point.pointSummaryList.map(summary => {
-      return new google.maps.LatLng(summary.getLatitude(), summary.getLongitude());
+    this.$nextTick(function () {
+      vxm.heatmap.initializeCenter();
+      vxm.heatmap.zoomOut();
     });
-    vxm.heatmap.pushWeightedLocationList(latLngList);
-    vxm.heatmap.initializeCenter();
-    vxm.heatmap.zoomOut();
   }
 }
 </script>

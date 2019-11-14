@@ -25,6 +25,11 @@ export default class App extends Vue {
   mounted() {
     vxm.point.fetchListAsync(this.$http);
     vxm.heatmap.initialize("map");
+
+    const latLngList = vxm.point.pointSummaryList.map(summary => {
+      return new google.maps.LatLng(summary.getLatitude(), summary.getLongitude());
+    });
+    vxm.heatmap.pushWeightedLocationList(latLngList);
   }
 }
 </script>

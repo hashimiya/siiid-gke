@@ -7,7 +7,7 @@
         <div class="form">
           <form>
             <button type="submit" class="submit">
-              <nuxt-link to="timeline">
+              <nuxt-link to="heatmap">
                 Siiid をはじめる
               </nuxt-link>
             </button>
