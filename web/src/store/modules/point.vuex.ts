@@ -14,6 +14,7 @@ import {
 import {
   convertSummaryFromObj,
 } from "~/utils/grpc_message_util";
+import moment from "moment-timezone";
 
 export interface AddPointPayload {
   http: NuxtHTTPInstance
@@ -39,7 +40,7 @@ export class PointStore extends VuexModule {
   pushPointSummary(point: PointSummary): void {
     this._pointSummaryList.push(point);
     this._pointSummaryList.sort(function (a: PointSummary, b: PointSummary): number {
-      return a.getActionedat() > b.getActionedat() ? 1 : -1;
+      return moment(a.getActionedat()) < moment(b.getActionedat()) ? 1 : -1;
     })
   }
 
@@ -50,7 +51,7 @@ export class PointStore extends VuexModule {
         this._pointSummaryList = Array.from(points).map((point: any) => {
           return convertSummaryFromObj(point);
         }).sort(function (a: PointSummary, b: PointSummary): number {
-          return a.getActionedat() > b.getActionedat() ? 1 : -1;
+          return moment(a.getActionedat()) < moment(b.getActionedat()) ? 1 : -1;
         });
       });
     });

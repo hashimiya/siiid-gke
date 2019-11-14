@@ -57,7 +57,7 @@ export default class Timeline extends Vue {
   }
 
   convertHourTime(summary: PointSummary): string {
-    return moment.tz(summary.getActionedat(), "Asia/Tokyo").format("HH:mm");
+    return moment(summary.getActionedat()).format("hh:mm");
   }
 
   next() {

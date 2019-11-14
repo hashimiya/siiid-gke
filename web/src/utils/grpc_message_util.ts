@@ -1,6 +1,7 @@
 import {
   PointSummary,
 } from "~/proto/siiid_service_pb";
+import moment from "moment-timezone";
 
 export function convertSummaryFromObj(point: any): PointSummary {
   const summary = new PointSummary();
@@ -11,6 +12,6 @@ export function convertSummaryFromObj(point: any): PointSummary {
   summary.setPlace(point.place);
   summary.setTemperature(point.temperature);
   summary.setWeather(point.weather);
-  summary.setActionedat(point.actionedAt);
+  summary.setActionedat(moment.tz(point.actionedAt, "Asia/Tokyo").format());
   return summary;
 }
