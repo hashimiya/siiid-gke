@@ -12,13 +12,13 @@
         <a href="#">今日</a>
       </div>
       <div class="list">
-        <div class="description" v-for="summary in summaryList">
-          <img src="~assets/siiid_icon.svg" height="24px">
-          <p class="time"><span>{{ convertHourTime(summary) }}</span></p>
+        <div class="description" v-for="point in summaryList">
+          <img src="~assets/siiid_icon.svg" height="24px" @click="move(point)">
+          <p class="time"><span>{{ convertHourTime(point) }}</span></p>
           <div>
-            <p class="place">{{ summary.getPlace() }}</p>
-            <p>緯度：<span>{{ summary.getLatitude() }}</span> 経度：<span>{{ summary.getLongitude() }}</span></p>
-            <p>天気：{{ summary.getWeather() }} 気温：<span>{{ summary.getTemperature() }}℃</span> 湿度：<span>{{ summary.getHumidity() }}%</span></p>
+            <p class="place">{{ point.getPlace() }}</p>
+            <p>緯度：<span>{{ point.getLatitude() }}</span> 経度：<span>{{ point.getLongitude() }}</span></p>
+            <p>天気：{{ point.getWeather() }} 気温：<span>{{ point.getTemperature() }}℃</span> 湿度：<span>{{ point.getHumidity() }}%</span></p>
           </div>
           <img src="~assets/option_icon.svg" height="24px">
         </div>
@@ -36,7 +36,7 @@ import moment from "moment-timezone";
 @Component({
   layout: "app",
 })
-export default class Index extends Vue {
+export default class Timeline extends Vue {
   mounted() {
     if (!vxm.heatmap.isEnabledMap) {
       this.$nuxt.$router.push("heatmap");
@@ -66,6 +66,10 @@ export default class Index extends Vue {
 
   back() {
     alert("未実装")
+  }
+
+  move(point: PointSummary): void {
+    vxm.heatmap.updateCenter(new google.maps.LatLng(point.getLatitude(), point.getLongitude()))
   }
 
   get year(): string {
