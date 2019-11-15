@@ -1,12 +1,9 @@
-const API_KEY = process.env.API_KEY;
-const HOST = process.env.HOST;
-
 export default {
   mode: 'universal',
   srcDir: "src/",
   server: {
     port: 65431,
-    host: HOST,
+    host: process.env.HOST,
   },
   /*
   ** Headers of the page
@@ -23,7 +20,7 @@ export default {
     ],
     script: [
       {
-        src: `https://maps.google.com/maps/api/js?key=${API_KEY}&libraries=visualization`,
+        src: `https://maps.google.com/maps/api/js?key=AIzaSyAkprW6ct78IGL2pDWsLWiO-5M230BCk50&libraries=visualization`,
       }
     ]
   },

@@ -24,9 +24,6 @@ spec:
         env:
         - name: HOST
           value: 0.0.0.0
-          # todo
-          # - name: API_KEY
-          # value:
         ports:
         - name: web-d-port
           containerPort: 65431
