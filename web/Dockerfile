@@ -3,4 +3,4 @@ WORKDIR /app
 ADD . .
 RUN yarn install && yarn build
 CMD ["yarn", "start"]
-EXPOSE 65432
+EXPOSE 65431

@@ -1,29 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: web
 spec:
   selector:
     matchLabels:
       app: siiid
-      tier: frontend
+      tier: web
   replicas: 1
   template:
     metadata:
       labels:
         app: siiid
-        tier: frontend
+        tier: web
     spec:
       containers:
       - name: siiid
-        image: gcr.io/siiid-prd/siiid-frontend:latest
+        image: gcr.io/siiid-prd/siiid-web:latest
         resources:
           requests:
             cpu: 100m
             memory: 100Mi
         env:
-        - name: GET_HOSTS_FROM
-          value: dns
+        - name: HOST
+          value: 0.0.0.0
+          # todo
+          # - name: API_KEY
+          # value:
         ports:
-        - name: front-server
-          containerPort: 3000
+        - name: web-d-port
+          containerPort: 65431

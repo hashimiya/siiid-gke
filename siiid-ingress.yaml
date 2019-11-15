@@ -14,8 +14,8 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: siiid-frontend
-          servicePort: siiid-f-port
+          serviceName: siiid-web
+          servicePort: web-s-port
   - host: siiid-api.satokura.com
     http:
       paths:

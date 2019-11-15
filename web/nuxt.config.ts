@@ -1,10 +1,12 @@
 const API_KEY = process.env.API_KEY;
+const HOST = process.env.HOST;
 
 export default {
   mode: 'universal',
   srcDir: "src/",
   server: {
-    port: 65431
+    port: 65431,
+    host: HOST,
   },
   /*
   ** Headers of the page
