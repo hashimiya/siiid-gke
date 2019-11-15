@@ -66,5 +66,5 @@ export default {
       target: 'https://siiid-api.satokura.com',
       pathRewrite: { '^/api/': '' }
     }
-  }
+  },
 }

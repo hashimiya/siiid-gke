@@ -19,6 +19,7 @@ import moment from "moment-timezone";
 export interface AddPointPayload {
   http: NuxtHTTPInstance
   latLng: google.maps.LatLng
+  place: string
 }
 
 @Module({ namespacedPath: "point/", target: "nuxt" })
@@ -59,11 +60,14 @@ export class PointStore extends VuexModule {
 
   @action
   async addPointAsync(addPointPayload: AddPointPayload): Promise<PointSummary> {
-    const { http, latLng } = addPointPayload;
+    const { http, latLng, place } = addPointPayload;
 
     const req = new RecordPointRequest();
     req.setLatitude(latLng.lat());
     req.setLongitude(latLng.lng());
+    if (place !== "") {
+      req.setPlace(place);
+    }
 
     return http.post(
       "points",

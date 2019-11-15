@@ -3,6 +3,49 @@
     <article class="gmap">
       <div id="map"></div>
     </article>
+
+    <b-modal id="sendModal" hide-footer title="場所の追加">
+      <p>緯度: {{ targetLatLng === null ? 0 : targetLatLng.lat() }}</p>
+      <p>経度: {{ targetLatLng === null ? 0 : targetLatLng.lng() }}</p>
+
+      <b-form>
+        <b-form-group
+          v-if="isValidInputPlace"
+          label="場所名:"
+          label-for="input-place"
+        >
+          <b-form-input
+            id="input-place"
+            v-model="place"
+            type="text"
+            required
+            placeholder="Enter place"
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group>
+          <b-form-checkbox v-model="isValidInputPlace">場所名を入力する</b-form-checkbox>
+        </b-form-group>
+      </b-form>
+
+      <b-button
+        :disabled="!isValidButton"
+        class="mt-3"
+        variant="outline-danger"
+        block
+        @click="closeModal"
+      >
+        Cancel
+      </b-button>
+      <b-button
+        :disabled="!isValidButton"
+        class="mt-2"
+        variant="outline-success"
+        block
+        @click="addPoint"
+      >
+        Add
+      </b-button>
+    </b-modal>
   </div>
 </template>
 
@@ -12,7 +55,11 @@ import { vxm } from "@/store/store";
 
 @Component
 export default class Default extends Vue {
-  get targetLatLng() {
+  isValidInputPlace: boolean = false;
+  isValidButton: boolean = true;
+  place: string = "";
+
+  get targetLatLng(): google.maps.LatLng | null {
     return vxm.heatmap.targetLatLng;
   }
 
@@ -21,9 +68,22 @@ export default class Default extends Vue {
     if (latLng === null) {
       return;
     }
+    this.$root.$emit("bv::show::modal", "sendModal");
+  }
+
+  closeModal() {
+    this.$root.$emit("bv::hide::modal", "sendModal");
+  }
+
+  addPoint() {
+    if (this.targetLatLng === null) {
+      return;
+    }
+    this.isValidButton = false;
     vxm.point.addPointAsync({
       http: this.$http,
-      latLng,
+      latLng: this.targetLatLng,
+      place: this.place,
     }).then(point => {
       vxm.point.pushPointSummary(point);
 
@@ -31,6 +91,8 @@ export default class Default extends Vue {
         return new google.maps.LatLng(summary.getLatitude(), summary.getLongitude());
       });
       vxm.heatmap.updateHeatmap(latLngList);
+      this.$root.$emit("bv::hide::modal", "sendModal");
+      this.isValidButton = true;
     });
   }
 }
